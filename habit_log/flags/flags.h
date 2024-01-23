@@ -2,14 +2,13 @@
 #define FLAGS_H
 
 typedef enum  {
-  create = 1,
-  exclude,
-} commands;
+  show = 1,
+  help,
+  nl = 0,
+} flags;
 
 void remove_dash();
 
-commands get_command_value();
-
-void execute_flag();
+flags flag_value();
 
 #endif
