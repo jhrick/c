@@ -20,7 +20,9 @@ commands get_command_value(char *command_string) {
   }
 }
 
-void execute_flag(char *flag) {
+void execute_flag(char flag[]) {
+  remove_dash(flag);
+
   commands command = get_command_value(flag);
   
   printf("%d\n", command);
@@ -36,14 +38,4 @@ void execute_flag(char *flag) {
     }
     default: printf("flag -%s not found\n", flag);
   }
-}
-
-void check_flag(char flag[]) {
-  remove_dash(flag);
-
-  execute_flag(flag);
-
-  printf("%s\n", flag);
-
-  return;
 }

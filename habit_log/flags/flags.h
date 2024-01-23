@@ -6,6 +6,10 @@ typedef enum  {
   exclude,
 } commands;
 
-void check_flag();
+void remove_dash();
+
+commands get_command_value();
+
+void execute_flag();
 
 #endif
