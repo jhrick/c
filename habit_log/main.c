@@ -5,15 +5,26 @@
 #include "flags/flags.h"
 
 int main(int argc, char *argv[]) {
-  command_struct command;
+  if (is_flag(argv[1]) == 1) {
+    flag_struct flag;
 
-  command.command = command_value(argv[1]);
-  command.flag = nl;
-  strcpy(command.param, argv[2]);
+    flag.flag = flag_value(argv[1]);
+    strcpy(flag.param, argv[2]);
 
-  printf("%d\n", command.command);
+    printf("is a flag\n");
 
-  execute_command(command);
+    execute_flag(flag);
+  } else {
+    command_struct command;
+
+    printf("is a command\n");
+
+    command.command = command_value(argv[1]);
+    command.flag = not_flag;
+    strcpy(command.param, argv[2]);
+    
+    execute_command(command);
+  }
 
   return 0;
 }
