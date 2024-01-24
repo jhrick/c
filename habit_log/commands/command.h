@@ -6,7 +6,7 @@
 typedef enum {
   create = 1,
   config,
-  null = 0,
+  not_command = 0,
 } commands;
 
 typedef struct {

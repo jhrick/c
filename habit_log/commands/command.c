@@ -9,7 +9,7 @@ commands command_value(char *command_str) {
   } else if (strcmp(command_str, "config") == 0) {
     return config;
   } else {
-    return null;
+    return not_command;
   }
 }
 
