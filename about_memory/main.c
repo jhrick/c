@@ -24,6 +24,8 @@ void allocate_heap() {
 
     printf("%d\n", *number);
 
+    free(number);
+
     return;
 }
 
