@@ -17,11 +17,12 @@ void allocate_stack() {
     return;
 }
 
-void allocate_heap() {
-    int* number = malloc(sizeof(int));
+void allocate_heap(int size_for_allocation) {
+    int* number = malloc(sizeof(int) * size_for_allocation);
 
-    *number = 10;
+    *number = 1;
 
+    printf("sizeof: %d", sizeof(*number));
     printf("%d\n", *number);
 
     free(number);
@@ -30,9 +31,13 @@ void allocate_heap() {
 }
 
 int main() {
+    int size_for_allocation;
+
+    scanf("%d", &size_for_allocation);
+
     allocate_stack();
 
-    allocate_heap();
+    allocate_heap(size_for_allocation);
 
     return 0;
 }
