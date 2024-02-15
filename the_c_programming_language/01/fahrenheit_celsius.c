@@ -30,4 +30,15 @@ int main() {
         celsius += step;
     }
     
+    printf("\nfrom Fahrenheit to Celsius (reverse table):\n\n");
+    
+    for (fahr = upper; fahr >= lower; fahr -= step) {
+        printf("%3.0f %6.1f\n", fahr, 5.0 * (fahr - 32) / 9);
+    }
+
+    printf("\nfrom Celsius to Fahrenheit (reverse table):\n\n");
+    
+    for (celsius = upper; celsius >= lower; celsius -= step) {
+        printf("%3.0f %6.1f\n", celsius, celsius / 5 * 9 + 32);
+    }
 }
