@@ -4,14 +4,11 @@
 // for provoke an end-of-file
 
 int main() {
-    long nc;
+    double nc;
 
-    nc = 0;
-    while (getchar() != EOF)
-        nc++;
+    for (nc = 0; getchar() != EOF; ++nc);
     
-    printf("number characters: %ld\n", nc);
-    
-    
+    printf("number characters: %.0f\n", nc);
+     
     return 0;
 }
