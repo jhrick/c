@@ -18,7 +18,21 @@ int main() {
     last_char = 0;
     while ((c = getchar()) != EOF) {
         if ((last_char != ' ' && last_char != c) || (last_char == ' ' && c != ' ')) {
-            putchar(c);
+            if (c == '\t') {
+                putchar('\\');
+                putchar('t');
+                continue;
+            } else if (c == '\b') {
+                putchar('\\');
+                putchar('b');
+                continue;
+            } else if (c == '\\') {
+                putchar('\\');
+                putchar('\\');
+                continue;
+            } else {
+                putchar(c);
+            }
         }
 
         last_char = c;
