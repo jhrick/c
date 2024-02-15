@@ -5,13 +5,24 @@
 
 int main() {
     int c, nl, blanks, tabs;
+
+    int last_char;
+
     double nc;
 
     nc = 0;
     nl = 0;
     blanks = 0;
     tabs = 0;
+
+    last_char = 0;
     while ((c = getchar()) != EOF) {
+        if ((last_char != ' ' && last_char != c) || (last_char == ' ' && c != ' ')) {
+            putchar(c);
+        }
+
+        last_char = c;
+
         ++nc;
 
         if (c == '\t') {
@@ -26,7 +37,7 @@ int main() {
         }
     }
 
-    printf("number characters: %.0f\n", nc);
+    printf("\nnumber characters: %.0f\n", nc);
     printf("number of lines: %d\n", nl);
     printf("number of blanks: %d\n", blanks);
     printf("number of tabs: %d\n", tabs);
