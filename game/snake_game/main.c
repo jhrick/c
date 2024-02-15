@@ -4,35 +4,35 @@
 #define WIDTH 20
 #define HEIGHT 40
 
-// int *snake(int x, int y) {
-//     int x_position, y_position;
-//     int *positions_pointer;
+int *snake(int x, int y) {
+    int x_position, y_position;
+    int *positions_pointer;
 
-//     positions_pointer = &x_position;
+    positions_pointer = &x_position;
 
-//     x_position = x;
-//     y_position = y;
+    x_position = x;
+    y_position = y;
 
-//     return positions_pointer;
-// }
+    return positions_pointer;
+}
 
 void game_panel(char ch) {
-    // int snake_x_position, snake_y_position;
+    int snake_x_position, snake_y_position;
 
-    // int *snake_positions = snake(20, 40);
+    int *snake_positions = snake(20, 40);
 
-    // snake_x_position = *snake_positions;
-    // snake_y_position = *(snake_positions + 1);
+    snake_x_position = *snake_positions;
+    snake_y_position = *(snake_positions + 1);
 
-    // printf("x: %d, y: %d\n", snake_x_position, snake_y_position);
+    printf("x: %d, y: %d\n", snake_x_position, snake_y_position);
 
     for (int width = 0; width <= WIDTH; width++) {
         for (int height = 0; height <= HEIGHT; height++) {
-            // if (width == snake_x_position && height == snake_y_position) {
-            //     printf("# ");
-            // } else {
+            if (width == snake_x_position && height == snake_y_position) {
+                printf("# ");
+            } else {
                 printf("%c ", ch);
-            // }
+            }
         }
         printf("\n");
     }
