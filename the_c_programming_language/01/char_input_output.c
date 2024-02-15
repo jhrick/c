@@ -4,19 +4,32 @@
 // for provoke an end-of-file
 
 int main() {
-    int c, nl;
+    int c, nl, blanks, tabs;
     double nc;
 
+    nc = 0;
     nl = 0;
-    for (nc = 0;(c = getchar()) != EOF; ++nc) {
+    blanks = 0;
+    tabs = 0;
+    while ((c = getchar()) != EOF) {
+        ++nc;
+
+        if (c == '\t') {
+            ++tabs;
+        } else if (c == ' ') {
+            ++blanks;
+        }
+        
         if (c == '\n') {
-            ++nl;
             --nc;
+            ++nl;
         }
     }
 
     printf("number characters: %.0f\n", nc);
     printf("number of lines: %d\n", nl);
+    printf("number of blanks: %d\n", blanks);
+    printf("number of tabs: %d\n", tabs);
      
     return 0;
 }
