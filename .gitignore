@@ -1,5 +1,6 @@
 **/myprogram
 *.out
+.vscode
 
 ### folders/files ###
 pointers
