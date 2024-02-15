@@ -9,7 +9,10 @@ int main() {
 
     nl = 0;
     for (nc = 0;(c = getchar()) != EOF; ++nc) {
-        if (c == '\n') ++nl;
+        if (c == '\n') {
+            ++nl;
+            --nc;
+        }
     }
 
     printf("number characters: %.0f\n", nc);
