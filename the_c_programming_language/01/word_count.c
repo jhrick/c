@@ -1,20 +1,30 @@
 #include <stdio.h>
 
+#define IN  1   /* inside a word */
+#define OUT 0   /* outside a word */
+
 int main() {
-    int last_char, current_char;
-    int words;
+    int current_ch, lines, words, chars, state;
 
-    last_char = 0;
-    words = 0;
+    state = OUT;
+    lines = words = chars = 0;
 
-    while ((current_char = getchar()) != EOF) {
-        if (last_char >= 'A' && current_char == ' ' || last_char >= 'A' && current_char == '\n') {
+    while ((current_ch = getchar()) != EOF) {
+        ++chars;
+
+        if (current_ch == '\n') {
+            ++lines;
+        }
+
+        if (current_ch == ' ' || current_ch == '\n' || current_ch == '\t') {
+            state = OUT;
+        } else if (state == OUT) {
+            state = IN;
             ++words;
         }
-        last_char = current_char;
     }
     
-    printf("total words: %d\n", words);
+    printf("lines: %d, words: %d, chars: %d\n", lines, words, chars);
 
     return 0;
 }
