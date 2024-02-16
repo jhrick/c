@@ -1,28 +1,51 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <ncurses.h>
 
 #define WIDTH 20
 #define HEIGHT 40
 
-int *snake(int x, int y) {
-    int x_position, y_position;
-    int *positions_pointer;
+struct snake_positions {
+    int x;
+    int y;
+};
 
-    positions_pointer = &x_position;
 
-    x_position = x;
-    y_position = y;
+// void key_listener(int * snake_positions) {
+//     if (getch() == '\033') {
+//         getch();
+//         switch (getch()) {
+//         case 'A':
+//             *(snake_positions + 1) - 1;
+//             break;
+//         case 'B':
+//             *(snake_positions + 1) + 1;
+//             break;
+//         case 'C':
+//             *snake_positions + 1;
+//             break;
+//         case 'D':
+//             *snake_positions - 1;
+//             break;
+//         }
+//     }
+// }
 
-    return positions_pointer;
+struct snake_positions snake(int x, int y) {
+    struct snake_positions snake_positions_obj;
+
+    snake_positions_obj.x = x;
+    snake_positions_obj.y = y;
+
+    return snake_positions_obj;
 }
 
-void game_panel(char ch) {
+void game_panel(char ch, struct snake_positions snake_positions_obj) {
     int snake_x_position, snake_y_position;
 
-    int *snake_positions = snake(20, 40);
-
-    snake_x_position = *snake_positions;
-    snake_y_position = *(snake_positions + 1);
+    snake_x_position = snake_positions_obj.x;
+    snake_y_position = snake_positions_obj.y;
 
     printf("x: %d, y: %d\n", snake_x_position, snake_y_position);
 
@@ -41,13 +64,17 @@ void game_panel(char ch) {
 int main() {
     printf("\x1b[2J");
 
+    struct snake_positions snake_ps = snake(0, 0);
+
     while (1) {
+        // key_listener(player);
+
         printf("\033[H\033[J");
-        game_panel('.');
+        game_panel('.', snake_ps);
         sleep(1);
-        printf("\033[%d;%dH", 0, 0);
-        game_panel('.');
-        sleep(1);
+        // printf("\033[%d;%dH", 0, 0);
+        // game_panel('.', player);
+        // sleep(1);
     }
 
     printf("\x1b[H");
