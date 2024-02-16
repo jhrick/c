@@ -18,6 +18,12 @@ struct snake_struct {
     int y;
 };
 
+struct apple_struct {
+    int x;
+    int y;
+};
+
+
 struct snake_struct snake_initialize(int x, int y) {
     struct snake_struct snake_positions_obj;
 
@@ -25,6 +31,16 @@ struct snake_struct snake_initialize(int x, int y) {
     snake_positions_obj.y = y;
 
     return snake_positions_obj;
+}
+
+struct apple_struct generate_apple() {
+    struct apple_struct apple;
+    int r = rand();
+    
+    apple.x = r % WIDTH;
+    apple.y = r % HEIGHT;
+
+    return apple;
 }
 
 enum directions key_handler(int arrow) {
@@ -52,18 +68,21 @@ enum directions key_handler(int arrow) {
         return direction;
 }
 
-void game_panel(struct snake_struct snake_positions_obj) {
+void game_panel(struct snake_struct snake_positions_obj, struct apple_struct apple) {
     int snake_x_position, snake_y_position;
 
     snake_x_position = snake_positions_obj.x;
     snake_y_position = snake_positions_obj.y;
 
     printw("x: %d, y: %d\n\n", snake_x_position, snake_y_position);
+    printw("apple: %d %d\n", apple.x, apple.y);
 
     for (int width = 0; width <= WIDTH; width++) {
         for (int height = 0; height < HEIGHT; height++) {
             if (width == snake_x_position && height == snake_y_position) {
                 printw("# ");
+            } else if (width == apple.x && height == apple.y) {
+                printw("* ");
             } else {
                 printw(". ");
             }
@@ -77,16 +96,19 @@ int main(void) {
     int x, y;
     enum directions direction;
     struct snake_struct snake;
-    int random_num = 0;
+    struct apple_struct apple;
 
     x = y = 0;
     direction = RIGHT;
+    apple = generate_apple();
 
     initscr();
     keypad(stdscr, true);
     nodelay(stdscr, TRUE);
     while (1) {
         ch = getch();
+
+        timeout(50);
 
         if ((ch = getch()) == ERR) {
             switch (direction) {
@@ -116,8 +138,7 @@ int main(void) {
 
         snake = snake_initialize(x, y);
 
-        game_panel(snake);
-        timeout(80);
+        game_panel(snake, apple);
     }
     endwin();
     return 0;
