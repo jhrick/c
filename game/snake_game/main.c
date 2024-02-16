@@ -6,13 +6,20 @@
 #define WIDTH 20
 #define HEIGHT 40
 
-struct snake_positions {
+enum directions {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
+struct snake_struct {
     int x;
     int y;
 };
 
-struct snake_positions snake(int x, int y) {
-    struct snake_positions snake_positions_obj;
+struct snake_struct snake_initialize(int x, int y) {
+    struct snake_struct snake_positions_obj;
 
     snake_positions_obj.x = x;
     snake_positions_obj.y = y;
@@ -20,7 +27,32 @@ struct snake_positions snake(int x, int y) {
     return snake_positions_obj;
 }
 
-void game_panel(struct snake_positions snake_positions_obj) {
+enum directions key_handler(int arrow) {
+    enum directions direction;
+
+    switch (arrow)  {
+            case KEY_UP: 
+                direction = UP;
+                printw("\nup\n%");
+                break;
+            case KEY_DOWN: 
+                direction = DOWN;
+                printw("\ndown\n");
+                break;
+            case KEY_LEFT: 
+                direction = LEFT;
+                printw("\nleft\n");
+                break;
+            case KEY_RIGHT: 
+                direction = RIGHT;
+                printw("\nright\n");
+                break;
+        } 
+
+        return direction;
+}
+
+void game_panel(struct snake_struct snake_positions_obj) {
     int snake_x_position, snake_y_position;
 
     snake_x_position = snake_positions_obj.x;
@@ -43,39 +75,49 @@ void game_panel(struct snake_positions snake_positions_obj) {
 int main(void) {
     int ch;
     int x, y;
-    struct snake_positions snake_ps;
+    enum directions direction;
+    struct snake_struct snake;
+    int random_num = 0;
 
     x = y = 0;
+    direction = RIGHT;
 
     initscr();
     keypad(stdscr, true);
+    nodelay(stdscr, TRUE);
     while (1) {
         ch = getch();
+
+        if ((ch = getch()) == ERR) {
+            switch (direction) {
+            case UP:
+                --x;
+                printw("cima\n");
+                break;
+            case DOWN: 
+                ++x;
+                printw("baixo\n");
+                break;
+            case LEFT: 
+                --y;
+                printw("esquerda\n");
+                break;
+            case RIGHT: 
+                ++y;
+                printw("direita\n");
+                break;
+            default:
+                ++y;
+            }
+        } else {
+            direction = key_handler(ch);
+        }
         mvprintw(0, 0, "\033[H\033[J"); /* clear screen */
 
-        switch (ch)  {
-            case KEY_UP: 
-                --x;
-                printw("\nup\n%d\n", x);
-                break;
-            case KEY_DOWN: 
-                ++x;
-                printw("\ndown\n%d\n", x);
-                break;
-            case KEY_LEFT: 
-                --y;
-                printw("\nleft\n%d\n", y);
-                break;
-            case KEY_RIGHT: 
-                ++y;
-                printw("\nright\n%d\n", y);
-                break;
-        }      
+        snake = snake_initialize(x, y);
 
-        snake_ps = snake(x, y);
-
-        game_panel(snake_ps);
-        sleep(0.75);
+        game_panel(snake);
+        timeout(80);
     }
     endwin();
     return 0;
