@@ -43,6 +43,14 @@ struct apple_struct generate_apple() {
     return apple;
 }
 
+bool snake_eat_apple(struct snake_struct snake, struct apple_struct apple) {
+    if (snake.x == apple.x && snake.y == apple.y) {
+        return 1;
+    }
+
+    return 0;
+}
+
 enum directions key_handler(int arrow) {
     enum directions direction;
 
@@ -134,6 +142,11 @@ int main(void) {
         } else {
             direction = key_handler(ch);
         }
+
+        if (snake_eat_apple(snake, apple)) {
+            apple = generate_apple();
+        }
+
         mvprintw(0, 0, "\033[H\033[J"); /* clear screen */
 
         snake = snake_initialize(x, y);
