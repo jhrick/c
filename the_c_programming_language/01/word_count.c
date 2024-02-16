@@ -18,9 +18,11 @@ int main() {
 
         if (current_ch == ' ' || current_ch == '\n' || current_ch == '\t') {
             state = OUT;
-        } else if (state == OUT) {
-            state = IN;
-            ++words;
+        } else if (current_ch >= 'A' && current_ch <= 'z') {
+            if (state == OUT) {
+              state = IN;
+              ++words;
+            }
         }
     }
     
