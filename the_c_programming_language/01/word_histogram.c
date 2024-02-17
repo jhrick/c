@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main(void) {
-    int c, nword, state;
+    int c;
     int bigger, i, j;
     int histogram[10];
 
