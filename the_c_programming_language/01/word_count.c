@@ -16,6 +16,10 @@ int main() {
             ++lines;
         }
 
+        if (current_ch == ' ' && state == IN || current_ch == '\n' && state == IN) {
+            printf("\n");
+        } 
+
         if (current_ch == ' ' || current_ch == '\n' || current_ch == '\t') {
             state = OUT;
         } else if (current_ch >= 'A' && current_ch <= 'z') {
@@ -23,6 +27,8 @@ int main() {
               state = IN;
               ++words;
             }
+
+            putchar(current_ch);
         }
     }
     
