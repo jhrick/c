@@ -20,10 +20,26 @@ int to_celsius(int fahr) {
 }
 
 int main (void) {
-    int i;
+    int c;
+    int value;
 
-    printf("fahr: %d\n", to_fahrenheit(100));
-    printf("celsius: %d\n", to_celsius(212));
+    printf("what temperature you want get?\nc - celsius\tf - fahrenheit\n");
+
+    c = getchar();
+
+    if (c == 'c') {
+        printf("please, insert the value from fahrenheit at you want convert to celsius: ");
+        scanf("%d", &value);
+
+        printf("fahrenheit = %d, celsius = %d\n", value, to_celsius(value));
+    } else if (c == 'f') {
+        printf("please, insert the value from celsius at you want convert to fahrenheit: ");
+        scanf("%d", &value);
+
+        printf("celsius = %d, fanrenheit = %d\n", value, to_fahrenheit(value));
+    } else {
+        printf("sorry, but I don't have this option");
+    }
 
     return 0;
 }
