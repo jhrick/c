@@ -26,6 +26,7 @@ int main() {
             if (state == OUT) {
               state = IN;
               ++words;
+              printf("%d: ", words);
             }
 
             putchar(current_ch);
