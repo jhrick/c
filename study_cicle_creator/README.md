@@ -8,7 +8,7 @@ I'm a student in my third year in high school. So I did this for help me for org
 
 ### Features for adding:
 
-[ ] record the cycle when created
-[ ] do a check for each hour studied
-[ ] add the date when it was created and when it was completed
-[ ] record date of each hour completed
+[ ] record the cycle when created   
+[ ] do a check for each hour studied    
+[ ] add the date when it was created and when it was completed  
+[ ] record date of each hour completed  
