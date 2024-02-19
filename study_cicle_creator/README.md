@@ -12,3 +12,4 @@ I'm a student in my third year in high school. So I did this for help me for org
 [ ] do a check for each hour studied    
 [ ] add the date when it was created and when it was completed  
 [ ] record date of each hour completed  
+[ ] leave the choice of subjects to the user    
