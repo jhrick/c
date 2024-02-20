@@ -25,7 +25,7 @@ int main(void) {
     }
 
     if (max > 0) {
-        printf("%s", longest);
+        printf("%s\n", longest);
     }
 
     return 0;
@@ -33,16 +33,21 @@ int main(void) {
 
 int getln(char s[], int lim) {
     int c, i;
-    int count;
 
-    for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++)
+    for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++) {
+        while (c == ' ' || c == '\t') {
+            c = getchar();
+        }
+
         s[i] = c;
+    }
+
     if (c == '\n') {
         s[i] = c;
         i++;
     }
 
-    s[i] = '\n';
+    s[i] = '\0';
 
     return i;
 }
@@ -54,5 +59,6 @@ void copy(char to[], char from[]) {
     while ((to[i] = from[i]) != '\0') {
         i++;
     }
+    
     to[i] = '\0';
 }
