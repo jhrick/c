@@ -7,8 +7,24 @@
 
 char right_words[BUFSIZE];
 int failed_attemps;
+int victory;
 
 char * get_word();
+
+void check_victory(char *word) {
+  int i, check;
+
+  for (i = 0; i <= (sizeof(word) - (NEWLINE_AND_NULL_CHAR + 1)); i++) {
+    if (!(right_words[i] == word[i])) {
+      break;
+    }
+
+    if (i == (sizeof(word) - (NEWLINE_AND_NULL_CHAR + 1))) {
+      printf("you win!\n");
+      victory = 1;
+    }
+  }
+}
 
 void check_guessed(char *word) {
   int i;
@@ -40,6 +56,7 @@ void check_char(int *c, char *word) {
     if (*c == word[i]) {
       right_words[i] = *c;
       have_char = 1;
+      check_victory(word);
     }
     i++;
   } while (word[i] != '\0');
@@ -65,6 +82,9 @@ void game_loop(void) {
 
     if (failed_attemps == MAX_ATTEMPS) {
       printf("you lose.\n");
+      break;
+    } else if (victory) {
+      printf("you win\n");
       break;
     }
   }
