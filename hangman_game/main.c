@@ -17,12 +17,12 @@ char * get_word();
 void check_victory(char *word) {
   int i, check;
 
-  for (i = 0; i <= (sizeof(word) - (NEWLINE_AND_NULL_CHAR + 1)); i++) {
+  for (i = 0; i <= word_size; i++) {
     if (!(right_words[i] == word[i])) {
       break;
     }
 
-    if (i == (sizeof(word) - (NEWLINE_AND_NULL_CHAR + 1))) {
+    if (i == word_size) {
       printf("you win!\n");
       victory = 1;
     }
