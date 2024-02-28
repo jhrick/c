@@ -23,8 +23,8 @@ void check_victory(char *word) {
     }
 
     if (i == word_size) {
-      printf("you win!\n");
       victory = 1;
+      break;
     }
   }
 }
@@ -73,8 +73,6 @@ void game_loop(void) {
   
   failed_attemps = 0;
   char_pointer = &c;
-
-  printf("%s\n", word);
 
   while ((c = getchar())) {
     getchar(); // skips '\n'
@@ -133,8 +131,6 @@ char * get_word(void) {
     fprintf(stderr, "allocation error");
     exit(EXIT_FAILURE);
   }
-
-  printf("random_line = %d\n", random_line);
 
   current_line = 1;
   position = 0;
