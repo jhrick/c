@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #define BUFSIZE 1028
 #define MAX_ATTEMPS 3
 #define NEWLINE_AND_NULL_CHAR 2
 
+int word_size;
 char right_words[BUFSIZE];
 int failed_attemps;
 int victory;
@@ -31,14 +34,14 @@ void check_guessed(char *word) {
 
   i = 0;
 
-  while (i < (sizeof(word) - NEWLINE_AND_NULL_CHAR)) {
+  while (i < word_size) {
     if (right_words[i] != '\0') {
       printf(" %c ", right_words[i]);
     } else {
       printf(" _ ");
     }
 
-    if ((i + 1) >= (sizeof(word) - NEWLINE_AND_NULL_CHAR)) {
+    if ((i + 1) >= word_size) {
       printf("\n");
     }
     i++;
@@ -96,8 +99,25 @@ int main(void) {
   return 0;
 }
 
+int count_lines(FILE *file) {
+  int c;
+  int count;
+
+  count = 0;
+
+  while ((c = getc(file)) != EOF) {
+    if (c == '\n') count++;
+  }
+  
+  rewind(file); // go back to the beginning of the file
+  return count;
+}
+
 char * get_word(void) {
-  int i, c;
+  int c, current_line, nline, position;
+  srand(time(NULL));
+
+  int lines;
   int bufsize = BUFSIZE;
   char *word;
   FILE *words_file;
@@ -105,23 +125,34 @@ char * get_word(void) {
 
   word = malloc(sizeof(char) * bufsize);
 
+  word_size = 0;
+  lines = count_lines(words_file);
+  int random_line = rand() % lines + 1;
+
   if (word == NULL) {
     fprintf(stderr, "allocation error");
     exit(EXIT_FAILURE);
   }
 
-  i = 0;
+  printf("random_line = %d\n", random_line);
+
+  current_line = 1;
+  position = 0;
 
   if (words_file) {
     while ((c = getc(words_file)) != EOF) {
       if (c == '\n') {
-        break;
+        current_line++;
+        c = getc(words_file);
       }
 
-      word[i] = c;
-      i++;
+      if (current_line == random_line) {
+        word[position] = c;
+        position++;
+        word_size++;
+      }
 
-      if (i >= bufsize) {
+      if (position >= bufsize) {
         bufsize += BUFSIZE;
         word = realloc(word, bufsize);
 

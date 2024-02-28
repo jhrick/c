@@ -1,2 +1,4 @@
 potato
 apple
+table
+smartphone
