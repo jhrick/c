@@ -74,6 +74,8 @@ void snake_moviment(enum directions direction) {
 struct snake_schema snake_initialize(void) {
   int i;
   struct snake_schema snake;
+  
+  snake_lenght = 3;
 
   snake.body[SNAKE_HEAD][X_POSITION] = INITIAL_POSITION;
   snake.body[SNAKE_HEAD][Y_POSITION] = INITIAL_POSITION;
@@ -159,6 +161,14 @@ void game_panel(struct apple_schema apple) {
   clear();
 
   for (width = 0; width < WIDTH; width++) {
+    if (check_snake_collision()) {
+      clear();
+
+      delay_output(1000);
+
+      return;
+    }
+
     for (height = 0; height < HEIGHT; height++) {
       if (render_snake(width, height)) {
         continue;
@@ -170,6 +180,7 @@ void game_panel(struct apple_schema apple) {
     }
     printw("\n");
   }
+
   refresh();
 }
 
@@ -180,8 +191,6 @@ int main(void) {
   struct apple_schema apple;
   
   snake_head_positions[X_POSITION] = snake_head_positions[Y_POSITION] = INITIAL_POSITION;
-
-  snake_lenght = 3;
 
   last_direction = RIGHT;
   direction = RIGHT;
@@ -211,15 +220,13 @@ int main(void) {
       snake_lenght++;
     }
 
-    if (check_snake_collision()) {
-      clear();
-
-      printw("game over\n");
-
-      break;
-    }
-
     game_panel(apple);
+
+    if (check_snake_collision()) {
+      snake_head_positions[X_POSITION] = snake_head_positions[Y_POSITION] = INITIAL_POSITION;
+      snake = snake_initialize();
+      continue;
+    }
   }
   endwin();
   return 0;
