@@ -84,6 +84,21 @@ struct snake_schema snake_initialize(void) {
   return snake;
 }
 
+int check_snake_collision() {
+  int head_postions[POSTIONS];
+
+  head_postions[X_POSITION] = snake.body[SNAKE_HEAD][X_POSITION];
+  head_postions[Y_POSITION] = snake.body[SNAKE_HEAD][Y_POSITION];
+
+  if (head_postions[X_POSITION] < 0 || head_postions[X_POSITION] == WIDTH) {
+    return 1;
+  } else if (head_postions[Y_POSITION] < 0 || head_postions[Y_POSITION] == HEIGHT) {
+    return 1;
+  }
+
+  return 0;
+}
+
 struct apple_schema generate_apple() {
   struct apple_schema apple;
   int r = rand();
@@ -194,6 +209,14 @@ int main(void) {
     if (snake_eat_apple(apple)) {
       apple = generate_apple();
       snake_lenght++;
+    }
+
+    if (check_snake_collision()) {
+      clear();
+
+      printw("game over\n");
+
+      break;
     }
 
     game_panel(apple);
