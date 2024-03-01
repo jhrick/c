@@ -7,7 +7,7 @@
 
 #define X_POSITION 0
 #define Y_POSITION 1
-#define DEFAULT_POSITION_VALUE 0
+#define INITIAL_POSITION 0
 #define SPEED 1
 
 #define MAX_SNAKE_SIZE 10 * 30
@@ -75,8 +75,8 @@ struct snake_schema snake_initialize(void) {
   int i;
   struct snake_schema snake;
 
-  snake.body[SNAKE_HEAD][X_POSITION] = snake_head_positions[X_POSITION];
-  snake.body[SNAKE_HEAD][Y_POSITION] = snake_head_positions[Y_POSITION];
+  snake.body[SNAKE_HEAD][X_POSITION] = INITIAL_POSITION;
+  snake.body[SNAKE_HEAD][Y_POSITION] = INITIAL_POSITION;
 
   snake.body[1][X_POSITION] = (snake.body[SNAKE_HEAD][X_POSITION] - 1);
   snake.body[1][Y_POSITION] = (snake.body[SNAKE_HEAD][Y_POSITION] - 1);
@@ -94,7 +94,7 @@ struct apple_schema generate_apple() {
   return apple;
 }
 
-bool snake_eat_apple(struct snake_schema snake, struct apple_schema apple) {
+bool snake_eat_apple(struct apple_schema apple) {
   if (snake.body[SNAKE_HEAD][X_POSITION] == apple.x &&
       snake.body[SNAKE_HEAD][Y_POSITION] == apple.y) {
     return 1;
@@ -124,7 +124,7 @@ enum directions key_handler(int arrow) {
   return direction;
 }
 
-int render_snake(int width, int height, struct snake_schema snake) {
+int render_snake(int width, int height) {
   int i;
 
   for (i = 0; i < snake_lenght; i++) {
@@ -138,14 +138,14 @@ int render_snake(int width, int height, struct snake_schema snake) {
   return 0;
 }
 
-void game_panel(struct snake_schema snake, struct apple_schema apple) {
+void game_panel(struct apple_schema apple) {
   int width, height;
 
   clear();
 
   for (width = 0; width < WIDTH; width++) {
     for (height = 0; height < HEIGHT; height++) {
-      if (render_snake(width, height, snake)) {
+      if (render_snake(width, height)) {
         continue;
       } else if (apple.x == width && apple.y == height) {
         printw(" * ");
@@ -164,7 +164,7 @@ int main(void) {
   enum directions direction;
   struct apple_schema apple;
   
-  snake_head_positions[X_POSITION] = snake_head_positions[Y_POSITION] = DEFAULT_POSITION_VALUE;
+  snake_head_positions[X_POSITION] = snake_head_positions[Y_POSITION] = INITIAL_POSITION;
 
   snake_lenght = 3;
 
@@ -191,12 +191,12 @@ int main(void) {
     
     snake_moviment(direction);
 
-    if (snake_eat_apple(snake, apple)) {
+    if (snake_eat_apple(apple)) {
       apple = generate_apple();
       snake_lenght++;
     }
 
-    game_panel(snake, apple);
+    game_panel(apple);
   }
   endwin();
   return 0;
