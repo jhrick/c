@@ -1,16 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
-#define BUFSIZE 1000
-#define STR_DELIM " \t\n\r\a"
+enum { BUFSIZE = 1028 };
 
-int args_lenght = 0;
+const char DELIM[] = " \t\r\n\a";
 
-char *read_line(void) {
+char *read_line() {
   int c, i;
-  char *line = malloc(sizeof(char) * BUFSIZE);
+  int bufsize = BUFSIZE;
+  char *line = malloc(sizeof(char) * bufsize);
 
+  if (line == NULL) {
+    printf("allocation error\n");
+    exit(EXIT_FAILURE);
+  }
+  
   i = 0;
 
   while ((c = getchar()) != EOF) {
@@ -19,7 +27,18 @@ char *read_line(void) {
     }
 
     line[i] = c;
-    ++i;
+
+    if (i >= bufsize) {
+      bufsize += BUFSIZE;
+      line = realloc(line, sizeof(char) * bufsize);
+
+      if (line == NULL) {
+        printf("allocation error\n");
+        exit(EXIT_FAILURE);
+      }
+    }
+
+    i++;
   }
 
   line[i] = '\0';
@@ -28,52 +47,79 @@ char *read_line(void) {
 }
 
 char **split_line(char *line) {
-  int position;
-  int bufsize = BUFSIZE;
-  char **tokens = malloc(bufsize * sizeof(char*));
+  int position, bufsize = BUFSIZE;
   char *token;
+  char **tokens = malloc(sizeof(char *) * bufsize);
 
   if (tokens == NULL) {
-    perror("allocation error");
+    printf("allocation error");
     exit(EXIT_FAILURE);
   }
 
   position = 0;
 
-  token = strtok(line, STR_DELIM);
-  while (token != NULL) {
+  token = strtok(line, DELIM);
+  while (token) {
     tokens[position] = token;
-    ++position;
 
     if (position > bufsize) {
       bufsize += BUFSIZE;
-      tokens = realloc(tokens, bufsize);
+      tokens = realloc(tokens, sizeof(char *) * bufsize);
 
       if (tokens == NULL) {
-        perror("allocation error");
+        printf("allocation error\n");
         exit(EXIT_FAILURE);
       }
     }
 
-    token = strtok(NULL, STR_DELIM);
-  }
+    position++;
 
-  args_lenght = position;
-  tokens[position] = NULL;
+    token = strtok(NULL, DELIM);
+  }
 
   return tokens;
 }
 
-int main(void) {
-  int i;
-  char *line = read_line();
-  char **args = split_line(line); 
-  
-  printf("args lenght = %d\n", args_lenght);
-  
-  for (i = 0; i < args_lenght; i++) {
-    printf("token = %s\n", args[i]);
+int launch(char **args) {
+  pid_t pid;
+  int status;
+
+  pid = fork();
+
+  if (pid == 0) {
+    if (execvp(args[0], args) == -1) {
+      perror("deu erro");
+    } 
+
+    exit(EXIT_FAILURE);
+  } else {
+    do {
+      waitpid(pid, &status, WUNTRACED);
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
   }
+
+  return 1;
+}
+
+void execute() {
+  char *line;
+  char **args;
+  int status;
+
+  do {
+    printf("-> ");
+
+    line = read_line();
+    args = split_line(line);
+    status = launch(args);
+
+    free(line);
+    free(args);
+  } while (status); 
+}
+
+int main(void) {
+  execute();
 
   return 0;
 }
